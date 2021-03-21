@@ -1,0 +1,286 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "1st Challenge Ignite Node - 2021",
+    "description": "This challenge consists in create API to control user in an fictional application",
+    "version": "1.0.0",
+    "contact": {
+      "email": "jpedro.porta@gmail.com"
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create an user",
+        "description": "Create an user given required parameters",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "User 1",
+                  "email": "user1@user.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "5e65c404-443a-4cf2-807d-d66faf81ca18",
+                  "admin": false,
+                  "name": "User 2",
+                  "email": "user2@user.com",
+                  "created_at": "2021-03-21T04:24:26.879Z",
+                  "updated_at": "2021-03-21T04:24:26.879Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User already exists"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "List all users",
+        "description": "List all users, only if given user_id in header is an admin",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "user_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Id from user admin"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "admin": {
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "exemple": [
+                    {
+                      "id": "eb4a01b4-5fb2-4624-b00b-2806f8a821bd",
+                      "admin": true,
+                      "name": "User 1",
+                      "email": "user1@user.com",
+                      "created_at": "2021-03-21T04:22:46.308Z",
+                      "updated_at": "2021-03-21T04:23:01.625Z"
+                    },
+                    {
+                      "id": "5e65c404-443a-4cf2-807d-d66faf81ca18",
+                      "admin": false,
+                      "name": "User 2",
+                      "email": "user2@user.com",
+                      "created_at": "2021-03-21T04:24:26.879Z",
+                      "updated_at": "2021-03-21T04:24:26.879Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requesting user is not an admin"
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get a user profile",
+        "description": "Get all information from a single user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Id from user that profile will be returned"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": "eb4a01b4-5fb2-4624-b00b-2806f8a821bd",
+                    "admin": true,
+                    "name": "User 1",
+                    "email": "user1@user.com",
+                    "created_at": "2021-03-21T04:22:46.308Z",
+                    "updated_at": "2021-03-21T04:23:01.625Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User does not exists"
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Turn an user into admin",
+        "description": "Make user identified para parameter into admin user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Id from user that will be an admin"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": "eb4a01b4-5fb2-4624-b00b-2806f8a821bd",
+                    "admin": true,
+                    "name": "User 1",
+                    "email": "user1@user.com",
+                    "created_at": "2021-03-21T04:22:46.308Z",
+                    "updated_at": "2021-03-21T04:23:01.625Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User does not exists"
+          }
+        }
+      }
+    }
+  }
+}

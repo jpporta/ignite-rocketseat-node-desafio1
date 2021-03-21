@@ -11,7 +11,7 @@ class ListAllUsersUseCase {
   execute({ user_id }: IRequest): User[] {
     const userAdmin = this.usersRepository.findById(user_id);
     if (!userAdmin || !userAdmin.admin) {
-      throw new Error("Ressorse only available to admins");
+      throw new Error("Resource only available to admins");
     }
     return this.usersRepository.list();
   }
