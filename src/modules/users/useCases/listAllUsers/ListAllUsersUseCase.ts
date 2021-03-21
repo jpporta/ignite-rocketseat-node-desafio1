@@ -6,10 +6,14 @@ interface IRequest {
 }
 
 class ListAllUsersUseCase {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(private usersRepository: IUsersRepository) { }
 
   execute({ user_id }: IRequest): User[] {
-    // Complete aqui
+    const userAdmin = this.usersRepository.findById(user_id);
+    if (!userAdmin || !userAdmin.admin) {
+      throw new Error("Ressorse only available to admins");
+    }
+    return this.usersRepository.list();
   }
 }
 
